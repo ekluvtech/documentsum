@@ -1,6 +1,6 @@
 import logging
 import sys
-
+import uuid;   
 from llama_index.embeddings.openai import OpenAIEmbedding
 from llama_index.core import (Settings, VectorStoreIndex, SimpleDirectoryReader, PromptTemplate, Document)
 from llama_index.core import StorageContext, ServiceContext
@@ -37,13 +37,13 @@ def init_index():
 
     # read documents in docs directory
     # the directory contains data set related to red team and blue team cyber security strategy
-    reader = SimpleDirectoryReader(input_dir="./docs", recursive=True)
+    reader = SimpleDirectoryReader(input_dir="C:/Users/Dell/Downloads/sample", recursive=True)
     documents = reader.load_data()
 
     logging.info("index creating with `%d` documents", len(documents))
 
     # create large document with documents for better text balancing
-    document = Document(text="\n\n".join([doc.text for doc in documents]))
+    document = Document(text="\n\n".join([doc.text for doc in documents]),id_=str(uuid.uuid4()))
 
     # sentece window node parser
     # window_size = 3, the resulting window will be three sentences long
@@ -58,11 +58,11 @@ def init_index():
 
     # delete collection if exists,
     # in production application, the collection needs to be handle without deleting
-    qdrant_client.delete_collection("rag_001")
+   # qdrant_client.delete_collection("rag1")
 
     # qdrant vector store with enabling hybrid search
     vector_store = QdrantVectorStore(
-        collection_name="rag_001",
+        collection_name="rag1",
         client=qdrant_client,
         enable_hybrid=True,
         batch_size=20

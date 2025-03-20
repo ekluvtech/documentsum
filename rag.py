@@ -52,7 +52,7 @@ class Rag:
   def feed(self, file_path: str):
     chunks = self.csv_obj.split_into_chunks(file_path)
     self.vector_store = self.csv_obj.store_to_vector_database(chunks)
-
+  
     self.set_retriever()
     self.augment()
 
